@@ -71,6 +71,11 @@ dependencies {
     compileOnly("ch.qos.logback:logback-core")
     compileOnly("org.slf4j:slf4j-api")
     // interface slf4j , impl logback
+
+    // hibernate
+    compileOnly("org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.2.Final")
+    compileOnly("org.hibernate:hibernate-core")
+    // hibernate
 }
 
 tasks.compileKotlin {
