@@ -1,8 +1,16 @@
 # Default ignored files
-/shelf/
 /workspace.xml
-# Editor-based HTTP Client requests
+/usage.statistics.xml
+/tasks.xml
+/gradle.xml
+/sonarlint/
+/libraries/
+/modules.xml
+/artifacts
+/shelf
 /httpRequests/
+
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+/php.xml
