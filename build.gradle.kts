@@ -1,26 +1,7 @@
 group = "io.foreshore.cookware"
 version = "0.0.1-SNAPSHOT"
 
-val nexusUser:String by project
-val nexusPassword:String by project
-val nexus:String by project
-val nexusSnapshot:String by project
-val nexusRelease:String by project
-
-val repo:String = System.getenv("CI_NEXUS") ?: nexus
-val repoSnapshot:String = System.getenv("CI_NEXUS_SNAPSHOT") ?: nexusSnapshot
-val repoRelease:String = System.getenv("CI_NEXUS_RELEASE") ?: nexusRelease
-val repoUser:String = System.getenv("CI_NEXUS_USER") ?: nexusUser
-val repoPassword:String = System.getenv("CI_NEXUS_PASSWORD") ?: nexusPassword
-
 repositories {
-    maven {
-        url = uri(repo)
-        credentials {
-            username = repoUser
-            password = repoPassword
-        }
-    }
     mavenCentral()
 }
 
@@ -102,22 +83,5 @@ tasks.jacocoTestReport {
     reports {
         html.required.set(true)
         xml.required.set(true)
-    }
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            from(components["java"])
-        }
-    }
-    repositories {
-        maven {
-            credentials {
-                username = repoUser
-                password = repoPassword
-            }
-            url = uri(if(project.version.toString().contains("SNAPSHOT", true)) repoSnapshot else repoRelease)
-        }
     }
 }
