@@ -1,5 +1,6 @@
-package io.github.jisungbin.erratum.time
+package io.foreshore.cookware.time
 
+import io.foreshore.cookware.time.TimeProvider
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime

@@ -1,4 +1,4 @@
-package io.github.jisungbin.erratum.time
+package io.foreshore.cookware.time
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
