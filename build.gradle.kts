@@ -27,6 +27,27 @@ jacoco {
     toolVersion ="0.8.7"
 }
 
+tasks.withType<Test>().configureEach {
+    jacoco {
+        // Combined deduction from errors:
+        // 1. "Val cannot be reassigned" -> 'excludes' is a val (final reference).
+        // 2. "Type mismatch: inferred type is List<String> but (Mutable)Set<String!>! was expected"
+        //    -> The collection it points to is expected to be treated as a Set.
+        // This implies 'excludes' is something like: val excludes: MutableSet<String>
+
+        // First, clear any existing default excludes if necessary.
+        // If this line fails, it means 'excludes' isn't a mutable collection directly.
+        excludes.clear()
+        excludes.addAll(setOf(
+            "sun/util/resources/cldr/provider/CLDRLocaleDataMetaInfo", // Exact match for the problematic class
+            "sun/util/resources/cldr/provider/*", // Keep the wildcard too just in case
+            "jdk/internal/**",
+            "com/sun/**",
+            "sun/**"
+        ))
+    }
+}
+
 dependencies {
     val ver = object {  // Dependency versions.
         val kotest = "5.5.4"
@@ -84,4 +105,19 @@ tasks.jacocoTestReport {
         html.required.set(true)
         xml.required.set(true)
     }
+    // The classDirectories modification for jacocoTestReport might still be useful
+    // to ensure reports don't try to process these, but the agent exclusion is key.
+    classDirectories.setFrom(
+        files(classDirectories.files.map {
+            fileTree(it) {
+                exclude(
+                    "sun/util/resources/cldr/provider/CLDRLocaleDataMetaInfo", // Exact match
+                    "sun/util/resources/cldr/provider/**",
+                    "jdk/internal/**",
+                    "com/sun/**",
+                    "sun/**"
+                )
+            }
+        })
+    )
 }
